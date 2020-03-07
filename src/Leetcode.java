@@ -36,29 +36,44 @@ class TreeNode {
 	}
 }
 
+class Node {
+    public int val;
+    public Node next;
+    public Node random;
+
+    public Node() {}
+
+    public Node(int _val,Node _next,Node _random) {
+        val = _val;
+        next = _next;
+        random = _random;
+    }
+};
+
 public class Leetcode {
-	public void rotate(int[][] matrix) {
-		int n = matrix.length;
-		int left=0, right=n-1, top=0, bottom=n-1;
-		while(n>1) {
-			for(int i=0; i<n-1; i++) {
-				int temp = matrix[top][left+i];
-				matrix[top][left+i] = matrix[bottom-i][left];
-				matrix[bottom-i][left] = matrix[bottom][right-i];
-				matrix[bottom][right-i] = matrix[top+i][right];
-				matrix[top+i][right] = temp;
-			}
-			left++;
-			right--;
-			top++;
-			bottom--;
-			n -= 2;
-		}
+	public boolean wordBreak(String s, List<String> wordDict) {
+		return wordBreakHelper(s, wordDict, 0, new HashSet<Integer>());
 	}
-    
+
+	public boolean wordBreakHelper(String s, List<String> wordDict, int d, Set<Integer> cache) {
+		if (d == s.length())
+			return true;
+		if (cache.contains(d))
+			return false;
+		for (String word : wordDict) {
+			if (s.startsWith(word, d)) {
+				if (wordBreakHelper(s, wordDict, d + word.length(), cache))
+					return true;
+				cache.add(d + word.length()); // prove this d+word.length() has tried and fail, no need to try, save
+												// time
+			}
+		}
+		return false;
+	}
+
 	public static void main(String[] args) {
 
-		String res = getLongestCommonSubString("rasw", "asw");
+		int res = climbStairs(4);
 		System.out.println(res);
 	}
 
